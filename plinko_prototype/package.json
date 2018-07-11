@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node lib/server_engine.js",
     "compile": "babel -presets es2015 -d lib/ src/",
-    "prepublish": "npm run compile"
+    "prepublish": "npm run compile",
+    "dev": "watch 'npm run compile' src"
   },
   "keywords": [
     "'"

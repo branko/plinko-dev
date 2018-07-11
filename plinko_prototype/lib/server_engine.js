@@ -35,6 +35,8 @@ var run = function run() {
 
 run();
 
+console.log('running engine');
+
 setInterval(function () {
 
   var bodies = engine.world.bodies.map(function (body) {
@@ -49,7 +51,7 @@ setInterval(function () {
   });
 
   io.emit('snapshot', bodies);
-}, 1000);
+}, 1000 / 30);
 
 _matterJs.Events.on(engine, 'collisionStart', function (event) {
   var pairs = event.pairs;
@@ -82,13 +84,14 @@ io.on('connection', function (socket) {
   socket.emit('connection established', { message: 'you made it!' });
 
   socket.on('new chip', function (coords) {
+    console.log('new chip received by server');
     var chip = (0, _Chip2.default)(coords.x, coords.y);
-    _matterJs.World.add(engine.world, chip);
+    _matterJs.World.add(engine.world, chip.body);
   });
 
-  socket.on('pingRequest', function () {
-    socket.emit('pongResponse', 'pong');
-  });
+  // socket.on('pingRequest', () => {
+  //   socket.emit('pongResponse', 'pong')
+  // })
 });
 
 tunnel.on('close', function () {

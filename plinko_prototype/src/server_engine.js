@@ -25,6 +25,8 @@ var run = function() {
 
 run()
 
+console.log('running engine')
+
 setInterval(() => {
 
   var bodies = engine.world.bodies.map(body => {
@@ -38,7 +40,7 @@ setInterval(() => {
 
   io.emit('snapshot', bodies)
 
-}, 1000)
+}, 1000/30)
 
 
 Events.on(engine, 'collisionStart', function(event) {
@@ -71,16 +73,17 @@ app.get('/main.js', (req, res) => {
 
 
 io.on('connection', (socket) => {
-  socket.emit('connection established', {message: 'you made it!'})
+  socket.emit('connection established', { message: 'you made it!' })
 
   socket.on('new chip' , function(coords) {
+    console.log('new chip received by server')
     let chip = generateChip(coords.x, coords.y)
-    World.add(engine.world, chip)
+    World.add(engine.world, chip.body)
   })
 
-  socket.on('pingRequest', () => {
-    socket.emit('pongResponse', 'pong')
-  })
+  // socket.on('pingRequest', () => {
+  //   socket.emit('pongResponse', 'pong')
+  // })
 });
 
 tunnel.on('close', function() {

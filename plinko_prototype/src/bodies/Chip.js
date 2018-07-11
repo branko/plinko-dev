@@ -5,7 +5,6 @@ function Chip(x, y) {
   var options = {
     restitution: .5,
     friction: 0,
-    isStatic: true,
   }
 
   var radius = 15
