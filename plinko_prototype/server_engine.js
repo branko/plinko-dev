@@ -1,7 +1,6 @@
 var CANVAS_WIDTH = 682
 var CANVAS_HEIGHT = 660
 
-
 var path = require('path');
 let app = require('express')()
 let server = require('http').Server(app)
@@ -26,7 +25,6 @@ var run = function() {
 
 run()
 
-
 setInterval(() => {
 
   var bodies = engine.world.bodies.map(body => {
@@ -37,7 +35,7 @@ setInterval(() => {
       y: Math.floor(body.position.y),
     }
   }).filter(b => b.label === 'chip')
-  
+
   io.emit('snapshot', bodies)
 
 }, 1000)

@@ -3,7 +3,7 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../constants/canvas';
 
 
 export function Wall(x, y, w, h) {
-  this.body = Matter.Bodies.rectangle(x, y, w, h, { isStatic: true })
+  this.body = Bodies.rectangle(x, y, w, h, { isStatic: true })
 }
 
 export function Ground() {

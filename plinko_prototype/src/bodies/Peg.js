@@ -7,6 +7,6 @@ export default function Peg(x, y, r) {
     isStatic: true,
   }
 
-  this.body = Matter.Bodies.circle(x, y, 5, options)
+  this.body = Bodies.circle(x, y, 5, options)
   this.body.label = 'peg'
 }

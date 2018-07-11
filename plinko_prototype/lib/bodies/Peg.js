@@ -14,7 +14,7 @@ function Peg(x, y, r) {
     isStatic: true
   };
 
-  this.body = Matter.Bodies.circle(x, y, 5, options);
+  this.body = _matterJs.Bodies.circle(x, y, 5, options);
   this.body.label = 'peg';
 }
 //# sourceMappingURL=Peg.js.map

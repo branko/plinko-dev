@@ -11,7 +11,7 @@ var _matterJs = require('matter-js');
 var _canvas = require('../constants/canvas');
 
 function Wall(x, y, w, h) {
-  this.body = Matter.Bodies.rectangle(x, y, w, h, { isStatic: true });
+  this.body = _matterJs.Bodies.rectangle(x, y, w, h, { isStatic: true });
 }
 
 function Ground() {
