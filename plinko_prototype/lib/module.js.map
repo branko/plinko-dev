@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/module.js"],"names":["hello","console","log"],"mappings":";;;;;kBAAwBA,K;AAAT,SAASA,KAAT,GAAiB;AAC9BC,UAAQC,GAAR,CAAY,OAAZ;AACD","file":"module.js","sourcesContent":["export default function hello() {\n  console.log('hello')\n}\n\n"]}
