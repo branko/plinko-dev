@@ -15,25 +15,24 @@ for (var row = 0; row < ROWS; row++) {
     }
     var colSpace = SPACING + row * SPACING;
     var peg = new Peg(rowSpace, colSpace, 3);
-    bodies.push(peg)
+    bodies.push(peg.body)
   }
 }
 
 // Generate bucket walls
 for (var i = 1; i < COLS; i++) {
   let wall = new Wall(SPACING * i, CANVAS_HEIGHT - 80, 5, 200);
-  bodies.push(wall)
+  bodies.push(wall.body)
 }
 
 // Generate left and right walls
 const leftWall = new Wall(0, CANVAS_HEIGHT / 2, 5, CANVAS_HEIGHT);
 const rightWall = new Wall(CANVAS_WIDTH, CANVAS_HEIGHT / 2, 5, CANVAS_HEIGHT);
 
-bodies.push(leftWall)
-bodies.push(rightWall)
+bodies.push(leftWall.body)
+bodies.push(rightWall.body)
 
 // Generate ground
 const ground = new Ground();
-bodies.push(ground)
-
+bodies.push(ground.body)
 export default bodies

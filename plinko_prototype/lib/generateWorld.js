@@ -28,26 +28,25 @@ for (var row = 0; row < _canvas.ROWS; row++) {
     }
     var colSpace = _canvas.SPACING + row * _canvas.SPACING;
     var peg = new _Peg2.default(rowSpace, colSpace, 3);
-    bodies.push(peg);
+    bodies.push(peg.body);
   }
 }
 
 // Generate bucket walls
 for (var i = 1; i < _canvas.COLS; i++) {
   var wall = new _Wall.Wall(_canvas.SPACING * i, _canvas.CANVAS_HEIGHT - 80, 5, 200);
-  bodies.push(wall);
+  bodies.push(wall.body);
 }
 
 // Generate left and right walls
 var leftWall = new _Wall.Wall(0, _canvas.CANVAS_HEIGHT / 2, 5, _canvas.CANVAS_HEIGHT);
 var rightWall = new _Wall.Wall(_canvas.CANVAS_WIDTH, _canvas.CANVAS_HEIGHT / 2, 5, _canvas.CANVAS_HEIGHT);
 
-bodies.push(leftWall);
-bodies.push(rightWall);
+bodies.push(leftWall.body);
+bodies.push(rightWall.body);
 
 // Generate ground
 var ground = new _Wall.Ground();
-bodies.push(ground);
-
+bodies.push(ground.body);
 exports.default = bodies;
 //# sourceMappingURL=generateWorld.js.map

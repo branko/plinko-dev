@@ -14,7 +14,10 @@ var _canvas = require('./constants/canvas');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+console.log(_generateWorld2.default);
+
 var engine = _matterJs.Engine.create();
+console.log(document.body);
 
 // create a renderer
 var render = _matterJs.Render.create({
@@ -29,7 +32,7 @@ var render = _matterJs.Render.create({
 
 // add all of the bodies to the world
 _matterJs.World.add(engine.world, _generateWorld2.default);
-
+console.log(engine.world);
 // run the engine
 _matterJs.Engine.run(engine);
 

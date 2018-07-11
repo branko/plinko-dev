@@ -17,17 +17,17 @@ socket.on('snapshot', (bodies) => {
 
     if (!currentBodies[body.id]) {
       if (body.label === 'peg') {
-        const peg = new Peg(body.x, body.y)
+        const peg = new Peg(body.x, body.y).body
         currentBodies[body.id] = peg
         World.add(engine.world, peg)
       } else if (body.label === 'chip') {
-        const chip = generateChip(body.x, body.y)
+        const chip = generateChip(body.x, body.y).body
         currentBodies[body.id] = chip
-        World.add(engine.world, peg)
+        World.add(engine.world, chip)
       }
     } else {
-      currentBodies[body.id].body.position.x = body.x;
-      currentBodies[body.id].body.position.y = body.y;
+      currentBodies[body.id].position.x = body.x;
+      currentBodies[body.id].position.y = body.y;
     }
   })
 })

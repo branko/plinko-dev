@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
 
-
 module.exports = {
   target: 'web',
   entry: './index.js',
