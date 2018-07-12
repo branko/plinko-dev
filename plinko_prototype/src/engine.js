@@ -1,5 +1,5 @@
 import { Engine, Events, Render, World } from 'matter-js';
-import bodies from './generateWorld'
+import backgroundBodies from './generateWorld'
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from './constants/canvas'
 
 
@@ -18,10 +18,7 @@ var render = Render.create({
 
 
 // add all of the bodies to the world
-World.add(engine.world, bodies);
-
-// run the engine
-Engine.run(engine);
+World.add(engine.world, backgroundBodies);
 
 // run the renderer
 Render.run(render);

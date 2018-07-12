@@ -7,28 +7,28 @@ let server = require('http').Server(app)
 let io = require('socket.io')(server)
 let localtunnel = require('localtunnel')
 
-import bodies from './generateWorld';
+import backgroundBodies from './generateWorld';
 import generateChip from './bodies/Chip';
 import { Engine, World, Bodies, Body, Events } from 'matter-js';
 
 // create an engine
 var engine = Engine.create();
 
-World.add(engine.world, bodies)
+World.add(engine.world, backgroundBodies)
+
+let currentFrame = 0;
 
 // run the engine
 var run = function() {
   return setInterval(function() {
       Engine.update(engine, 1000 / 60);
+      currentFrame++
   }, 1000 / 60);
 }
 
 run()
 
-console.log('running engine')
-
 setInterval(() => {
-
   var bodies = engine.world.bodies.map(body => {
     return {
       id: body.id,
@@ -39,9 +39,9 @@ setInterval(() => {
     }
   }).filter(b => b.label === 'chip')
 
-  io.emit('snapshot', bodies)
+  io.emit('snapshot', { frame: currentFrame, bodies })
 
-}, 1000/30)
+}, 1000 / 10)
 
 
 Events.on(engine, 'collisionStart', function(event) {
@@ -74,7 +74,8 @@ app.get('/main.js', (req, res) => {
 
 
 io.on('connection', (socket) => {
-  socket.emit('connection established', { message: 'you made it!' })
+  console.log("Emitted: ", currentFrame)
+  socket.emit('connection established', currentFrame)
 
   socket.on('new chip' , function(coords) {
     console.log('new chip received by server')
@@ -82,9 +83,6 @@ io.on('connection', (socket) => {
     World.add(engine.world, chip.body)
   })
 
-  // socket.on('pingRequest', () => {
-  //   socket.emit('pongResponse', 'pong')
-  // })
 });
 
 tunnel.on('close', function() {
