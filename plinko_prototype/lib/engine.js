@@ -30,9 +30,6 @@ var render = _matterJs.Render.create({
 // add all of the bodies to the world
 _matterJs.World.add(engine.world, _generateWorld2.default);
 
-// run the engine
-_matterJs.Engine.run(engine);
-
 // run the renderer
 _matterJs.Render.run(render);
 

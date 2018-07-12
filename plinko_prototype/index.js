@@ -1,37 +1,37 @@
 import io from 'socket.io-client';
-import { World, Body } from 'matter-js';
+import { Engine, World, Body } from 'matter-js';
 import engine from './src/engine';
 import generateChip from './src/bodies/Chip';
-import { Peg } from './src/bodies/Peg'
+import { generatePeg } from './src/bodies/Peg'
+import runParallelSimulation from './src/parallel_engine.js'
 
 var socket = io.connect('http://radioactive-kittens.localtunnel.me/');
 
-socket.on('connection established', (data) => {
-  console.log('ESTABLISHED!')
+let currentFrame;
+
+socket.on('connection established', (frameNumber) => {
+  console.log('ESTABLISHED! CURRENT FRAME: ', frameNumber)
+  currentFrame = frameNumber
+
+  // run the engine
+  setInterval(() => {
+    Engine.update(engine, 1000 / 60)
+    currentFrame++
+  }, 1000 / 60)
+
 })
 
 var currentBodies = {}
 
-socket.on('snapshot', (bodies) => {
-  console.log('snapshot received')
+socket.on('snapshot', ({ frame, bodies }) => {
 
-  bodies.forEach(body => {
+  let simulatedBodies = runParallelSimulation(currentFrame, frame, bodies)
+
+  simulatedBodies.forEach(body => {
     if (!currentBodies[body.id]) {
-      if (body.label === 'peg') {
-        const peg = new Peg(body.x, body.y).body
-        currentBodies[body.id] = peg
-        World.add(engine.world, peg)
-      } else if (body.label === 'chip') {
-        const chip = generateChip(body.x, body.y).body
-        Body.setVelocity(chip, body.linearVelocity)
-        currentBodies[body.id] = chip
-        World.add(engine.world, chip)
-      }
-    } else {
-      currentBodies[body.id].position.x = body.x;
-      currentBodies[body.id].position.y = body.y;
-      Body.setVelocity(currentBodies[body.id], body.linearVelocity);
+      World.add(engine.world, body)
     }
+    currentBodies[body.id] = body
   })
 })
 
@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
     const yCoordinate = Math.min(e.clientY, 200)
 
     socket.emit('new chip', { x: e.clientX, y: yCoordinate })
+
   })
 })
 

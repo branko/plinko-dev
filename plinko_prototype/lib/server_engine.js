@@ -26,19 +26,19 @@ var engine = _matterJs.Engine.create();
 
 _matterJs.World.add(engine.world, _generateWorld2.default);
 
+var currentFrame = 0;
+
 // run the engine
 var run = function run() {
   return setInterval(function () {
     _matterJs.Engine.update(engine, 1000 / 60);
+    currentFrame++;
   }, 1000 / 60);
 };
 
 run();
 
-console.log('running engine');
-
 setInterval(function () {
-
   var bodies = engine.world.bodies.map(function (body) {
     return {
       id: body.id,
@@ -51,8 +51,8 @@ setInterval(function () {
     return b.label === 'chip';
   });
 
-  io.emit('snapshot', bodies);
-}, 1000 / 30);
+  io.emit('snapshot', { frame: currentFrame, bodies: bodies });
+}, 1000 / 10);
 
 _matterJs.Events.on(engine, 'collisionStart', function (event) {
   var pairs = event.pairs;
@@ -82,17 +82,14 @@ app.get('/main.js', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-  socket.emit('connection established', { message: 'you made it!' });
+  console.log("Emitted: ", currentFrame);
+  socket.emit('connection established', currentFrame);
 
   socket.on('new chip', function (coords) {
     console.log('new chip received by server');
     var chip = (0, _Chip2.default)(coords.x, coords.y);
     _matterJs.World.add(engine.world, chip.body);
   });
-
-  // socket.on('pingRequest', () => {
-  //   socket.emit('pongResponse', 'pong')
-  // })
 });
 
 tunnel.on('close', function () {
