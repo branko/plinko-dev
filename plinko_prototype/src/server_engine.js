@@ -35,6 +35,7 @@ setInterval(() => {
       label: body.label,
       x: Math.floor(body.position.x),
       y: Math.floor(body.position.y),
+      linearVelocity: body.velocity
     }
   }).filter(b => b.label === 'chip')
 

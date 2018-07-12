@@ -44,7 +44,8 @@ setInterval(function () {
       id: body.id,
       label: body.label,
       x: Math.floor(body.position.x),
-      y: Math.floor(body.position.y)
+      y: Math.floor(body.position.y),
+      linearVelocity: body.velocity
     };
   }).filter(function (b) {
     return b.label === 'chip';

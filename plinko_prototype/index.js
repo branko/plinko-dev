@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import { World } from 'matter-js';
+import { World, Body } from 'matter-js';
 import engine from './src/engine';
 import generateChip from './src/bodies/Chip';
 import { Peg } from './src/bodies/Peg'
@@ -23,13 +23,14 @@ socket.on('snapshot', (bodies) => {
         World.add(engine.world, peg)
       } else if (body.label === 'chip') {
         const chip = generateChip(body.x, body.y).body
-        chip.isStatic = true;
+        Body.setVelocity(chip, body.linearVelocity)
         currentBodies[body.id] = chip
         World.add(engine.world, chip)
       }
     } else {
       currentBodies[body.id].position.x = body.x;
       currentBodies[body.id].position.y = body.y;
+      Body.setVelocity(currentBodies[body.id], body.linearVelocity);
     }
   })
 })
