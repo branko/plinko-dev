@@ -52,7 +52,7 @@ setInterval(function () {
   });
 
   io.emit('snapshot', { frame: currentFrame, bodies: bodies });
-}, 1000 / 10);
+}, 1000);
 
 _matterJs.Events.on(engine, 'collisionStart', function (event) {
   var pairs = event.pairs;

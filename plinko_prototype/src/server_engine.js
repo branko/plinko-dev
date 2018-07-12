@@ -28,6 +28,9 @@ var run = function() {
 
 run()
 
+
+// I wonder if this setInterval is expensive enough
+// to account for the lost frames?
 setInterval(() => {
   var bodies = engine.world.bodies.map(body => {
     return {
@@ -41,7 +44,7 @@ setInterval(() => {
 
   io.emit('snapshot', { frame: currentFrame, bodies })
 
-}, 1000 / 10)
+}, 1000)
 
 
 Events.on(engine, 'collisionStart', function(event) {

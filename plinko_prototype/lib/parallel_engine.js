@@ -16,7 +16,9 @@ var _Chip2 = _interopRequireDefault(_Chip);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function runParallelSimulation(currentFrame, targetFrame, bodies) {
+function runParallelSimulation(clientFrame, serverFrame, bodies) {
+  var simulationFrame = serverFrame;
+
   var engine = _matterJs.Engine.create();
 
   // add all of the bodies to the world
@@ -31,9 +33,11 @@ function runParallelSimulation(currentFrame, targetFrame, bodies) {
 
   _matterJs.World.add(engine.world, actualBodies);
 
-  while (currentFrame < targetFrame) {
+  // Server frame needs to catch up to client frame
+  // (server is in the past)
+  while (simulationFrame < clientFrame) {
     _matterJs.Engine.update(engine, 1000 / 60);
-    currentFrame++;
+    simulationFrame++;
   }
 
   var simulatedWorld = _matterJs.Composite.allBodies(engine.world);

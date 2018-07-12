@@ -7,6 +7,8 @@ import runParallelSimulation from './src/parallel_engine.js'
 
 var socket = io.connect('http://radioactive-kittens.localtunnel.me/');
 
+let tempChips = []
+
 let currentFrame;
 
 socket.on('connection established', (frameNumber) => {
@@ -24,6 +26,11 @@ socket.on('connection established', (frameNumber) => {
 var currentBodies = {}
 
 socket.on('snapshot', ({ frame, bodies }) => {
+  console.log(`Frames => Server: ${frame}, Client: ${currentFrame}, Client ahead by ${currentFrame - frame} frames`)
+
+  tempChips.forEach(chip => {
+    World.remove(engine.world, chip)
+  })
 
   let simulatedBodies = runParallelSimulation(currentFrame, frame, bodies)
 
@@ -35,23 +42,21 @@ socket.on('snapshot', ({ frame, bodies }) => {
   })
 })
 
+
 document.addEventListener('DOMContentLoaded', function(e) {
   var canvas = document.querySelector('canvas')
 
   canvas.addEventListener('click', function(e) {
     e.stopPropagation()
-    console.log('click event')
+
     const yCoordinate = Math.min(e.clientY, 200)
 
-    socket.emit('new chip', { x: e.clientX, y: yCoordinate })
+    let chip = generateChip(e.clientX, yCoordinate).body
+    chip.label = 'temp'
+    chip.render.fillStyle = '#ffffff'
+    tempChips.push(chip)
+    World.add(engine.world, chip)
 
+    socket.emit('new chip', { x: e.clientX, y: yCoordinate })
   })
 })
-
-// socket.on('pongResponse', function(msg) {
-//   console.log(msg)
-// })
-//
-// setInterval(function() {
-//   socket.emit('pingRequest', {})
-// }, 1000)

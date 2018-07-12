@@ -36,8 +36,16 @@ _matterJs.Render.run(render);
 _matterJs.Events.on(engine, 'collisionStart', function (event) {
   var pairs = event.pairs;
 
+  if (pairs[0].bodyA.label === 'temp' || pairs[0].bodyB.label === 'temp') {
+    return;
+  }
+
   for (var i = 0; i < pairs.length; i++) {
     var pair = pairs[i];
+
+    if (pair.bodyA.label === 'temp' || pair.bodyB.label === 'temp') {
+      continue;
+    }
 
     if (pair.bodyA.label === 'peg') {
       pair.bodyA.render.fillStyle = pair.bodyB.render.fillStyle;
