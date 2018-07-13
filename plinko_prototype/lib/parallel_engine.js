@@ -24,14 +24,14 @@ function runParallelSimulation(clientFrame, serverFrame, bodies) {
   // add all of the bodies to the world
   _matterJs.World.add(engine.world, _generateWorld2.default);
 
-  var actualBodies = bodies.map(function (body) {
+  var actualChipBodies = bodies.map(function (body) {
     var chip = (0, _Chip2.default)(body.x, body.y);
     _matterJs.Body.setVelocity(chip.body, body.linearVelocity);
     chip.body.id = body.id;
     return chip.body;
   });
 
-  _matterJs.World.add(engine.world, actualBodies);
+  _matterJs.World.add(engine.world, actualChipBodies);
 
   // Server frame needs to catch up to client frame
   // (server is in the past)
@@ -40,8 +40,8 @@ function runParallelSimulation(clientFrame, serverFrame, bodies) {
     simulationFrame++;
   }
 
-  var simulatedWorld = _matterJs.Composite.allBodies(engine.world);
-  return simulatedWorld;
+  // let simulatedWorld = Composite.allBodies(engine.world)
+  return actualChipBodies;
 }
 
 exports.default = runParallelSimulation;

@@ -43,6 +43,8 @@ backgroundBodies.push(rightWall.body);
 
 // Generate ground
 var ground = new _Wall.Ground();
+ground.body.label = 'ground';
 backgroundBodies.push(ground.body);
+
 exports.default = backgroundBodies;
 //# sourceMappingURL=generateWorld.js.map

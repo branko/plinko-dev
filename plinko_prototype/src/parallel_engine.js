@@ -10,14 +10,14 @@ function runParallelSimulation(clientFrame, serverFrame, bodies) {
   // add all of the bodies to the world
   World.add(engine.world, backgroundBodies);
 
-  let actualBodies = bodies.map(body => {
+  let actualChipBodies = bodies.map(body => {
     let chip = generateChip(body.x, body.y)
     Body.setVelocity(chip.body, body.linearVelocity)
     chip.body.id = body.id
     return chip.body
   })
 
-  World.add(engine.world, actualBodies);
+  World.add(engine.world, actualChipBodies);
 
   // Server frame needs to catch up to client frame
   // (server is in the past)
@@ -27,8 +27,8 @@ function runParallelSimulation(clientFrame, serverFrame, bodies) {
   }
 
 
-  let simulatedWorld = Composite.allBodies(engine.world)
-  return simulatedWorld
+  // let simulatedWorld = Composite.allBodies(engine.world)
+  return actualChipBodies
 }
 
 export default runParallelSimulation

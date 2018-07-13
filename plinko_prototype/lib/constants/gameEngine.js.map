@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/constants/gameEngine.js"],"names":["TIMESTEP","SNAPSHOT_INTERVAL"],"mappings":";;;;;AAAO,IAAMA,8BAAW,OAAO,EAAxB;AACA,IAAMC,gDAAoB,OAAO,CAAjC","file":"gameEngine.js","sourcesContent":["export const TIMESTEP = 1000 / 60\nexport const SNAPSHOT_INTERVAL = 1000 / 6\n"]}

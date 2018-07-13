@@ -1,5 +1,7 @@
 'use strict';
 
+var _gameEngine = require('./constants/gameEngine.js');
+
 var _generateWorld = require('./generateWorld');
 
 var _generateWorld2 = _interopRequireDefault(_generateWorld);
@@ -28,18 +30,38 @@ _matterJs.World.add(engine.world, _generateWorld2.default);
 
 var currentFrame = 0;
 
+var time = void 0;
+
 // run the engine
 var run = function run() {
+  console.log('running...');
+  time = new Date();
+
   return setInterval(function () {
-    _matterJs.Engine.update(engine, 1000 / 60);
+    if (chipQueue[currentFrame]) {
+      chipQueue[currentFrame].forEach(function (body) {
+        _matterJs.World.add(engine.world, body);
+      });
+    }
+    chipQueue[currentFrame] = undefined;
+
+    _matterJs.Engine.update(engine, _gameEngine.TIMESTEP);
     currentFrame++;
-  }, 1000 / 60);
+    if (currentFrame % 240 === 0) {
+      console.log("Time elapsed for 240 frames: ", (new Date() - time) / 1000);
+      time = new Date();
+    }
+  }, _gameEngine.TIMESTEP);
 };
 
 run();
 
+// I wonder if this setInterval is expensive enough
+// to account for the lost frames?
 setInterval(function () {
-  var bodies = engine.world.bodies.map(function (body) {
+  var bodies = engine.world.bodies.filter(function (b) {
+    return b.label === 'chip';
+  }).map(function (body) {
     return {
       id: body.id,
       label: body.label,
@@ -47,12 +69,10 @@ setInterval(function () {
       y: Math.floor(body.position.y),
       linearVelocity: body.velocity
     };
-  }).filter(function (b) {
-    return b.label === 'chip';
   });
 
   io.emit('snapshot', { frame: currentFrame, bodies: bodies });
-}, 1000);
+}, _gameEngine.SNAPSHOT_INTERVAL);
 
 _matterJs.Events.on(engine, 'collisionStart', function (event) {
   var pairs = event.pairs;
@@ -64,6 +84,10 @@ _matterJs.Events.on(engine, 'collisionStart', function (event) {
       pair.bodyA.render.fillStyle = pair.bodyB.render.fillStyle;
     } else if (pair.bodyB.label === 'peg') {
       pair.bodyB.render.fillStyle = pair.bodyA.render.fillStyle;
+    } else if (pair.bodyA.label === 'ground') {
+      _matterJs.World.remove(engine.world, pair.bodyB);
+    } else if (pair.bodyB.label === 'ground') {
+      _matterJs.World.remove(engine.world, pair.bodyA);
     }
   }
 });
@@ -81,14 +105,23 @@ app.get('/main.js', function (req, res) {
   res.sendFile(path.resolve(__dirname + '/../dist/main.js'));
 });
 
+var chipQueue = {};
+
 io.on('connection', function (socket) {
   console.log("Emitted: ", currentFrame);
   socket.emit('connection established', currentFrame);
 
-  socket.on('new chip', function (coords) {
-    console.log('new chip received by server');
-    var chip = (0, _Chip2.default)(coords.x, coords.y);
-    _matterJs.World.add(engine.world, chip.body);
+  socket.on('new chip', function (chipInfo) {
+    var chip = (0, _Chip2.default)(chipInfo.x, chipInfo.y);
+
+    chip.body.id = chipInfo.id;
+
+    if (currentFrame >= chipInfo.frame) {
+      _matterJs.World.add(engine.world, chip.body);
+    } else {
+      chipQueue[chipInfo.frame] = chipQueue[chipInfo.frame] || [];
+      chipQueue[chipInfo.frame].push(chip.body);
+    }
   });
 });
 

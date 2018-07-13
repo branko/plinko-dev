@@ -34,5 +34,7 @@ backgroundBodies.push(rightWall.body)
 
 // Generate ground
 const ground = new Ground();
+ground.body.label = 'ground'
 backgroundBodies.push(ground.body)
+
 export default backgroundBodies
