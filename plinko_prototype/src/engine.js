@@ -1,27 +1,14 @@
-import { Engine, Events, Render, World } from 'matter-js';
+
+import * as PIXI from 'pixi.js'
+import { Engine, Events, RenderPixi, World } from 'matter-js';
 import backgroundBodies from './generateWorld'
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from './constants/canvas'
 
 
-var engine = Engine.create();
+
 
 // create a renderer
-var render = Render.create({
-    element: document.body,
-    engine: engine,
-    options: {
-      wireframes: false,
-      width: CANVAS_WIDTH,
-      height: CANVAS_HEIGHT,
-    }
-});
-
-
-// add all of the bodies to the world
-World.add(engine.world, backgroundBodies);
-
-// run the renderer
-Render.run(render);
+const engine = Engine.create()
 
 Events.on(engine, 'collisionStart', function(event) {
   var pairs = event.pairs;

@@ -1,5 +1,5 @@
 import { Bodies, World } from 'matter-js';
-import { generatePeg } from './bodies/Peg';
+import Peg from './bodies/Peg';
 import { Wall, Ground } from './bodies/Wall';
 import { CANVAS_WIDTH, CANVAS_HEIGHT, SPACING, ROWS, COLS } from './constants/canvas';
 
@@ -14,27 +14,26 @@ for (var row = 0; row < ROWS; row++) {
       rowSpace += SPACING / 2;
     }
     var colSpace = SPACING + row * SPACING;
-    var peg = generatePeg(rowSpace, colSpace);
-    backgroundBodies.push(peg.body)
+    var peg = new Peg({ x: rowSpace, y: colSpace});
+    backgroundBodies.push(peg)
   }
 }
 
 // Generate bucket walls
 for (var i = 1; i < COLS; i++) {
-  let wall = new Wall(SPACING * i, CANVAS_HEIGHT - 80, 5, 200);
-  backgroundBodies.push(wall.body)
+  let wall = new Wall({ x: SPACING * i, y: CANVAS_HEIGHT - 80, width: 5, height: 200});
+  backgroundBodies.push(wall)
 }
 
 // Generate left and right walls
-const leftWall = new Wall(0, CANVAS_HEIGHT / 2, 5, CANVAS_HEIGHT);
-const rightWall = new Wall(CANVAS_WIDTH, CANVAS_HEIGHT / 2, 5, CANVAS_HEIGHT);
+const leftWall = new Wall({x: 0, y: CANVAS_HEIGHT / 2, width: 5, height: CANVAS_HEIGHT});
+const rightWall = new Wall({x: CANVAS_WIDTH, y:CANVAS_HEIGHT / 2, width: 5, height: CANVAS_HEIGHT});
 
-backgroundBodies.push(leftWall.body)
-backgroundBodies.push(rightWall.body)
+backgroundBodies.push(leftWall)
+backgroundBodies.push(rightWall)
 
 // Generate ground
 const ground = new Ground();
-ground.body.label = 'ground'
-backgroundBodies.push(ground.body)
+backgroundBodies.push(ground)
 
 export default backgroundBodies

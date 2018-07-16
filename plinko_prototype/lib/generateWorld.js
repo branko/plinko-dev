@@ -8,9 +8,13 @@ var _matterJs = require('matter-js');
 
 var _Peg = require('./bodies/Peg');
 
+var _Peg2 = _interopRequireDefault(_Peg);
+
 var _Wall = require('./bodies/Wall');
 
 var _canvas = require('./constants/canvas');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Array to hold bodies to add to world later
 var backgroundBodies = [];
@@ -23,28 +27,27 @@ for (var row = 0; row < _canvas.ROWS; row++) {
       rowSpace += _canvas.SPACING / 2;
     }
     var colSpace = _canvas.SPACING + row * _canvas.SPACING;
-    var peg = (0, _Peg.generatePeg)(rowSpace, colSpace);
-    backgroundBodies.push(peg.body);
+    var peg = new _Peg2.default({ x: rowSpace, y: colSpace });
+    backgroundBodies.push(peg);
   }
 }
 
 // Generate bucket walls
 for (var i = 1; i < _canvas.COLS; i++) {
-  var wall = new _Wall.Wall(_canvas.SPACING * i, _canvas.CANVAS_HEIGHT - 80, 5, 200);
-  backgroundBodies.push(wall.body);
+  var wall = new _Wall.Wall({ x: _canvas.SPACING * i, y: _canvas.CANVAS_HEIGHT - 80, width: 5, height: 200 });
+  backgroundBodies.push(wall);
 }
 
 // Generate left and right walls
-var leftWall = new _Wall.Wall(0, _canvas.CANVAS_HEIGHT / 2, 5, _canvas.CANVAS_HEIGHT);
-var rightWall = new _Wall.Wall(_canvas.CANVAS_WIDTH, _canvas.CANVAS_HEIGHT / 2, 5, _canvas.CANVAS_HEIGHT);
+var leftWall = new _Wall.Wall({ x: 0, y: _canvas.CANVAS_HEIGHT / 2, width: 5, height: _canvas.CANVAS_HEIGHT });
+var rightWall = new _Wall.Wall({ x: _canvas.CANVAS_WIDTH, y: _canvas.CANVAS_HEIGHT / 2, width: 5, height: _canvas.CANVAS_HEIGHT });
 
-backgroundBodies.push(leftWall.body);
-backgroundBodies.push(rightWall.body);
+backgroundBodies.push(leftWall);
+backgroundBodies.push(rightWall);
 
 // Generate ground
 var ground = new _Wall.Ground();
-ground.body.label = 'ground';
-backgroundBodies.push(ground.body);
+backgroundBodies.push(ground);
 
 exports.default = backgroundBodies;
 //# sourceMappingURL=generateWorld.js.map

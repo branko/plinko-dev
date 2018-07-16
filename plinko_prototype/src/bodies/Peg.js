@@ -1,16 +1,8 @@
 import { Bodies } from 'matter-js'
+import GameObject from './GameObject'
 
-export function Peg(x, y) {
-  var options = {
-    restitution: .5,
-    friction: 0,
-    isStatic: true,
+export default class Peg extends GameObject {
+  constructor({x, y}) {
+    super({ type: 'peg', x, y });
   }
-
-  this.body = Bodies.circle(x, y, 5, options)
-  this.body.label = 'peg'
-}
-
-export function generatePeg(x, y) {
-  return new Peg(x, y)
 }

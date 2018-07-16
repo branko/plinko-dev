@@ -1,11 +1,19 @@
 import { Bodies } from 'matter-js'
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../constants/canvas';
+import GameObject from './GameObject'
 
-
-export function Wall(x, y, w, h) {
-  this.body = Bodies.rectangle(x, y, w, h, { isStatic: true })
+export class Wall extends GameObject {
+  constructor({ x, y, width, height }) {
+    super({ type: 'wall', x, y, width, height })
+  }
 }
 
-export function Ground() {
-  return new Wall(CANVAS_WIDTH / 2, CANVAS_HEIGHT , CANVAS_WIDTH, 60)
+export class Ground extends GameObject {
+  constructor() {
+    super({ type: 'ground',
+                        x: CANVAS_WIDTH / 2,
+                        y: CANVAS_HEIGHT,
+                        width: CANVAS_WIDTH,
+                        height: 60 })
+  }
 }

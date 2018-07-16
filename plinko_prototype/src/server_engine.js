@@ -1,5 +1,4 @@
-var CANVAS_WIDTH = 682
-var CANVAS_HEIGHT = 660
+process.env.serverEngine = true
 
 var path = require('path');
 let app = require('express')()
@@ -7,15 +6,16 @@ let server = require('http').Server(app)
 let io = require('socket.io')(server)
 let localtunnel = require('localtunnel')
 
-import { TIMESTEP, SNAPSHOT_INTERVAL } from './constants/gameEngine.js';
+import { TIMESTEP, SNAPSHOT_INTERVAL, CANVAS_HEIGHT, CANVAS_WIDTH } from './constants/gameEngine.js';
 import backgroundBodies from './generateWorld';
-import generateChip from './bodies/Chip';
+import Chip from './bodies/Chip';
 import { Engine, World, Bodies, Body, Events } from 'matter-js';
+
 
 // create an engine
 var engine = Engine.create();
 
-World.add(engine.world, backgroundBodies)
+World.add(engine.world, backgroundBodies.map(b => b.body))
 
 let currentFrame = 0;
 
@@ -76,9 +76,9 @@ Events.on(engine, 'collisionStart', function(event) {
         } else if (pair.bodyB.label === 'peg') {
           pair.bodyB.render.fillStyle = pair.bodyA.render.fillStyle;
         } else if (pair.bodyA.label === 'ground') {
-          World.remove(engine.world, pair.bodyB)
+          // World.remove(engine.world, pair.bodyB)
         } else if (pair.bodyB.label === 'ground') {
-          World.remove(engine.world, pair.bodyA)
+          // World.remove(engine.world, pair.bodyA)
         }
     }
 });
@@ -106,7 +106,7 @@ io.on('connection', (socket) => {
   socket.emit('connection established', currentFrame)
 
   socket.on('new chip' , function(chipInfo) {
-    let chip = generateChip(chipInfo.x, chipInfo.y)
+    let chip = new Chip(chipInfo)
 
     chip.body.id = chipInfo.id
 

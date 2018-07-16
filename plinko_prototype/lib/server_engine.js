@@ -14,8 +14,7 @@ var _matterJs = require('matter-js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var CANVAS_WIDTH = 682;
-var CANVAS_HEIGHT = 660;
+process.env.serverEngine = true;
 
 var path = require('path');
 var app = require('express')();
@@ -26,7 +25,9 @@ var localtunnel = require('localtunnel');
 // create an engine
 var engine = _matterJs.Engine.create();
 
-_matterJs.World.add(engine.world, _generateWorld2.default);
+_matterJs.World.add(engine.world, _generateWorld2.default.map(function (b) {
+  return b.body;
+}));
 
 var currentFrame = 0;
 
@@ -85,9 +86,9 @@ _matterJs.Events.on(engine, 'collisionStart', function (event) {
     } else if (pair.bodyB.label === 'peg') {
       pair.bodyB.render.fillStyle = pair.bodyA.render.fillStyle;
     } else if (pair.bodyA.label === 'ground') {
-      _matterJs.World.remove(engine.world, pair.bodyB);
+      // World.remove(engine.world, pair.bodyB)
     } else if (pair.bodyB.label === 'ground') {
-      _matterJs.World.remove(engine.world, pair.bodyA);
+      // World.remove(engine.world, pair.bodyA)
     }
   }
 });
@@ -112,7 +113,7 @@ io.on('connection', function (socket) {
   socket.emit('connection established', currentFrame);
 
   socket.on('new chip', function (chipInfo) {
-    var chip = (0, _Chip2.default)(chipInfo.x, chipInfo.y);
+    var chip = new _Chip2.default(chipInfo);
 
     chip.body.id = chipInfo.id;
 
