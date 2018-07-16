@@ -28,14 +28,6 @@ while( game_is_running ) {
     displayGame()
 }
 
-
-
-
-
-
-
-
-
 const FPS = 60;
 const TIMESTEP = 1000 / FPS;
 let startTime = Date.now();
@@ -57,7 +49,5 @@ function gameLoop() {
     frame++;
   }
 }
-
-setInterval(wrench, 250)
 
 setInterval(gameLoop, 0);

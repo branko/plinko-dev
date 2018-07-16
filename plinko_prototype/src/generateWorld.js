@@ -1,4 +1,4 @@
-import { Bodies, World } from 'matter-js';
+import { Body, Bodies, World } from 'matter-js';
 import Peg from './bodies/Peg';
 import { Wall, Ground } from './bodies/Wall';
 import { CANVAS_WIDTH, CANVAS_HEIGHT, SPACING, ROWS, COLS } from './constants/canvas';
@@ -34,6 +34,7 @@ backgroundBodies.push(rightWall)
 
 // Generate ground
 const ground = new Ground();
+Body.setAngle(ground.body, 90)
 backgroundBodies.push(ground)
 
 export default backgroundBodies

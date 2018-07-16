@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Pixi test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.1/pixi.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript" src="pixiScript.js">
+      var renderer = PIXI.autoDetectRenderer(800, 600, {backgroundColor: 0x1099bb})
+      document.body.appendChild(renderer.view);
+
+      var stage = new PIXI.Container();
+      var ball = new PIXI.Graphics()
+
+      ball.beginFill(0x123456);
+      ball.drawCircle(100,100,20);
+      ball.endFill();
+      stage.addChild(ball);
+
+
+      function animate() {
+        requestAnimationFrame(animate)
+        ball.position.x += (Math.random() + 1) ** (Math.random() + 2)
+        ball.position.y += (Math.random() + 1) ** (Math.random() + 2)
+        renderer.render(stage)
+      }
+
+      animate()
+
+    </script>
+  </body>
+</html>

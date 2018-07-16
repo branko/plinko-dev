@@ -11,14 +11,12 @@ import backgroundBodies from './generateWorld';
 import Chip from './bodies/Chip';
 import { Engine, World, Bodies, Body, Events } from 'matter-js';
 
-
 // create an engine
 var engine = Engine.create();
 
 World.add(engine.world, backgroundBodies.map(b => b.body))
 
 let currentFrame = 0;
-
 let time;
 
 // run the engine

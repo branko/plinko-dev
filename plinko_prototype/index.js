@@ -12,6 +12,8 @@ import renderer from './src/renderer'
 World.add(engine.world, backgroundBodies.map(b => b.body));
 const stage = new PIXI.Container();
 
+
+
 // stage.addChild(...backgroundBodies.map(b => b.sprite.sprite))
 // stage.addChild(new PIXI.Circle(50, 50, 10))
 
@@ -22,29 +24,32 @@ let runner;
 
 /////////////////////////////
 let frame = 0
-let startTime = Date.now();
 let nextTick = Date.now();
 let time = Date.now()
 
-function logAverageFPS(frame, startTime) {
-  let elapsedTime = (Date.now() - time) / 1000
-  let overallTime = (Date.now() - startTime) / 1000
-  if (frame % FPS === 0) {
-    console.log("Average FPS: ", 60 / elapsedTime, " Overall: ", frame / overallTime);
-    time = Date.now()
-  }
-}
+// function updateDisplay(stage) {
+//   requestAnimationFrame(animate)
+// }
+//
+// function animate() {
+//
+// }
+
+let peg = new Peg({x: 100, y: 100})
+stage.addChild(peg.sprite)
 
 function gameLoop() {
   while (Date.now() > nextTick) {
-    logAverageFPS(frame, startTime);
 
     nextTick += TIMESTEP;
     Engine.update(engine, TIMESTEP)
     currentFrame++;
     frame++;
   }
+
+  renderer.render(stage)
 }
+
 
 function startRunner() {
   return setInterval(gameLoop, 0);
@@ -90,15 +95,16 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
     const yCoordinate = Math.min(e.clientY, 200)
 
-    let chip = new Chip({ x: e.clientX, y: yCoordinate }).body
-    chip.render.fillStyle = '#ffffff'
-    currentBodies[chip.id] = chip
-    lastChipCreated = chip.id
-    World.add(engine.world, chip)
+    let chip = new Chip({ x: e.clientX, y: yCoordinate })
 
-    console.log("You created: ", chip.id)
+    currentBodies[chip.body.id] = chip.body
+    lastChipCreated = chip.body.id
+    World.add(engine.world, chip.body)
+    stage.addChild(chip.sprite)
 
-    socket.emit('new chip', { id: chip.id, frame: currentFrame, x: e.clientX, y: yCoordinate })
+    console.log("You created: ", chip.body.id)
+
+    socket.emit('new chip', { id: chip.body.id, frame: currentFrame, x: e.clientX, y: yCoordinate })
   })
 })
 

@@ -25,7 +25,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Chip = function (_GameObject) {
   _inherits(Chip, _GameObject);
 
-  function Chip(x, y) {
+  function Chip(_ref) {
+    var x = _ref.x,
+        y = _ref.y;
+
     _classCallCheck(this, Chip);
 
     var _this = _possibleConstructorReturn(this, (Chip.__proto__ || Object.getPrototypeOf(Chip)).call(this, { type: 'chip', x: x, y: y }));

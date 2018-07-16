@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/loader.js"],"names":["PIXI","loader","add"],"mappings":";;;;;;AAAA;;IAAYA,I;;;;AAEZ,IAAIC,SAASD,KAAKC,MAAlB;;AAEAA,OAAOC,GAAP,CAAW,KAAX,EAAkB,mBAAlB;;kBAEeD,M","file":"loader.js","sourcesContent":["import * as PIXI from 'pixi.js'\n\nlet loader = PIXI.loader\n\nloader.add('cat', './sprites/cat.png')\n\nexport default loader\n"]}

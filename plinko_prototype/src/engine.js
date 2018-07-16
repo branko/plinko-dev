@@ -5,8 +5,6 @@ import backgroundBodies from './generateWorld'
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from './constants/canvas'
 
 
-
-
 // create a renderer
 const engine = Engine.create()
 

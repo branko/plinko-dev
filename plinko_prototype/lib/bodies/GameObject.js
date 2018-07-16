@@ -16,6 +16,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 // import * as PIXI from '../vendor/pixi.min.js'
 var PIXI = void 0;
+var loader = void 0;
 if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object') {
   PIXI = require('pixi.js');
 }
@@ -30,7 +31,7 @@ var GameObject = function () {
 
     _classCallCheck(this, GameObject);
 
-    this.x = y;
+    this.x = x;
     this.y = y;
     this.type = type;
     this.createPhysics({ width: width, height: height });
@@ -68,7 +69,11 @@ var GameObject = function () {
   }, {
     key: 'createSprite',
     value: function createSprite() {
-      this.sprite = new PIXI.Circle(this.x, this.y, _gameEngine.CHIP_RADIUS);
+
+      this.sprite = PIXI.Sprite.fromImage('../../sprites/cat.png');
+      this.sprite.anchor.set(0.5, 0.5);
+      this.sprite.x = this.x;
+      this.sprite.y = this.y;
     }
   }]);
 

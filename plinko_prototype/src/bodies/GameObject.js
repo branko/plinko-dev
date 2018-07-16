@@ -1,14 +1,16 @@
 // import * as PIXI from '../vendor/pixi.min.js'
 let PIXI;
+let loader;
 if (typeof window === 'object') {
   PIXI = require('pixi.js')
 }
 import { Bodies } from 'matter-js'
 import { CHIP_RADIUS, PEG_RADIUS } from '../constants/gameEngine'
 
+
 export default class GameObject {
   constructor({ type, x, y, width, height }) {
-    this.x = y;
+    this.x = x;
     this.y = y;
     this.type = type;
     this.createPhysics({ width, height });
@@ -38,6 +40,11 @@ export default class GameObject {
   }
 
   createSprite() {
-    this.sprite = new PIXI.Circle(this.x, this.y, CHIP_RADIUS)
+
+    this.sprite = PIXI.Sprite.fromImage('../../sprites/cat.png')
+    this.sprite.anchor.set(0.5, 0.5)
+    this.sprite.x = this.x
+    this.sprite.y = this.y
+
   }
 }

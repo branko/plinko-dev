@@ -30,7 +30,6 @@ _matterJs.World.add(engine.world, _generateWorld2.default.map(function (b) {
 }));
 
 var currentFrame = 0;
-
 var time = void 0;
 
 // run the engine

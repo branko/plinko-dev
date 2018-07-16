@@ -47,6 +47,7 @@ backgroundBodies.push(rightWall);
 
 // Generate ground
 var ground = new _Wall.Ground();
+_matterJs.Body.setAngle(ground.body, 90);
 backgroundBodies.push(ground);
 
 exports.default = backgroundBodies;

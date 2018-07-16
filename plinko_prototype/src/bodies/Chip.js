@@ -4,7 +4,7 @@ import GameObject from './GameObject'
 
 
 export default class Chip extends GameObject {
-  constructor(x, y) {
+  constructor({ x, y }) {
     super({ type: 'chip', x, y })
     this.body.shrink = this.shrink.bind(this)()
   }
